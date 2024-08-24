@@ -3,6 +3,7 @@ precision highp float;
 
 uniform vec2 resolution;
 uniform sampler2D positionMap;
+uniform float frame;
 
 #define packing(v) v * 0.5 + 0.5
 
@@ -66,7 +67,7 @@ void main() {
   } else if (bottom_left == 1.0 && bottom_right == 0.0) {
     // 右下のみ空き状態
     outColor = packing(vec4(1, -1, 0, 0));
-  } else if (0.5 < hash(vec3(uv, 0.1)).x) {
+  } else if (0.5 < hash(vec3(uv, frame)).x) {
     // 左下も右下も空き状態で、確率的にどちらかに移動させる
     outColor = packing(vec4(-1, -1, 0, 0));
   } else {

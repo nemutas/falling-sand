@@ -75,6 +75,7 @@ export class Canvas extends Three {
     this.createPlane('direction', {
       resolution: { value: [this.fboResolution.width, this.fboResolution.height] },
       positionMap: { value: null },
+      frame: { value: 0 },
     })
 
     this.createPlane('update', {
@@ -128,6 +129,7 @@ export class Canvas extends Three {
       this.use('direction')
       const uniforms = this.uniforms('direction')
       uniforms.positionMap.value = this.texture(this.positionFBOs[0])
+      uniforms.frame.value += 1
       this.renderer.setRenderTarget(this.directionFBO)
       this.renderer.render(this.scene, this.camera)
     }
@@ -196,7 +198,7 @@ export class Canvas extends Three {
 
   private get sandColor() {
     let col = this.sandColors[Math.trunc(Math.random() * this.sandColors.length)]
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       if (col !== this.prevSandColor) break
       col = this.sandColors[Math.trunc(Math.random() * this.sandColors.length)]
     }
