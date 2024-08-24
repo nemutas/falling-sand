@@ -1,7 +1,11 @@
 # About
 
-Inspired by [TOKYO NODE](https://www.tokyonode.jp/).
+Falling sand simulation with Three.js（WebGL）.
 
 https://nemutas.github.io/falling-sand/
 
-<img src='https://github.com/user-attachments/assets/a304b0b7-f111-4f43-9a96-3fb532ffb541' alt='' width='700' />
+<img src='https://github.com/user-attachments/assets/9b83a1c8-37fc-4b4b-841b-325b8b1f099d' alt='' width='700' />
+
+# Reference
+- [Making a falling sand simulator](https://jason.today/falling-sand)
+- [Coding Challenge 180: Falling Sand](https://youtu.be/L4u7Zy_b868?si=5aXfuGibNJZ28QSF)
