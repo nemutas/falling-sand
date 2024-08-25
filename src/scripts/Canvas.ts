@@ -67,7 +67,6 @@ export class Canvas extends Three {
     this.createPlane('input', {
       resolution: { value: [this.fboResolution.width, this.fboResolution.height] },
       positionMap: { value: null },
-      frame: { value: 0 },
       clickPos: { value: [0, 0] },
       sandColor: { value: new THREE.Color().setHex(this.sandColor) },
     })
@@ -75,7 +74,6 @@ export class Canvas extends Three {
     this.createPlane('direction', {
       resolution: { value: [this.fboResolution.width, this.fboResolution.height] },
       positionMap: { value: null },
-      frame: { value: 0 },
     })
 
     this.createPlane('update', {
@@ -91,25 +89,40 @@ export class Canvas extends Three {
   }
 
   private addMouseEvents() {
-    window.addEventListener('mousedown', (e) => {
-      this.isClick = true
+    const updateClickPos = (e: MouseEvent | Touch) => {
       const x = e.clientX / window.innerWidth
       const y = 1.0 - e.clientY / window.innerHeight
       this.clickPos = [x, y]
+    }
 
+    window.addEventListener('mousedown', (e) => {
+      this.isClick = true
+      updateClickPos(e)
       const uniforms = this.uniforms('input')
       uniforms.sandColor.value.setHex(this.sandColor)
     })
 
     window.addEventListener('mousemove', (e) => {
-      const x = e.clientX / window.innerWidth
-      const y = 1.0 - e.clientY / window.innerHeight
-      this.clickPos = [x, y]
+      updateClickPos(e)
     })
 
     window.addEventListener('mouseup', () => {
       this.isClick = false
-      this.clickPos = [-1, -1]
+    })
+
+    window.addEventListener('touchstart', (e) => {
+      this.isClick = true
+      updateClickPos(e.touches[0])
+      const uniforms = this.uniforms('input')
+      uniforms.sandColor.value.setHex(this.sandColor)
+    })
+
+    window.addEventListener('touchmove', (e) => {
+      updateClickPos(e.touches[0])
+    })
+
+    window.addEventListener('touchend', () => {
+      this.isClick = false
     })
   }
 
@@ -118,7 +131,6 @@ export class Canvas extends Three {
       this.use('input')
       const uniforms = this.uniforms('input')
       uniforms.positionMap.value = this.texture(this.positionFBOs[0])
-      uniforms.frame.value += 1
       uniforms.clickPos.value = this.isClick ? this.clickPos : [-1, -1]
       this.renderer.setRenderTarget(this.positionFBOs[1])
       this.renderer.render(this.scene, this.camera)
@@ -129,7 +141,6 @@ export class Canvas extends Three {
       this.use('direction')
       const uniforms = this.uniforms('direction')
       uniforms.positionMap.value = this.texture(this.positionFBOs[0])
-      uniforms.frame.value += 1
       this.renderer.setRenderTarget(this.directionFBO)
       this.renderer.render(this.scene, this.camera)
     }
@@ -198,7 +209,7 @@ export class Canvas extends Three {
 
   private get sandColor() {
     let col = this.sandColors[Math.trunc(Math.random() * this.sandColors.length)]
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 20; i++) {
       if (col !== this.prevSandColor) break
       col = this.sandColors[Math.trunc(Math.random() * this.sandColors.length)]
     }

@@ -6,6 +6,7 @@ html {
   @include fonts.poppins;
   height: 100%;
   background: #000;
+  overscroll-behavior: none;
   @include sp {
     font-size: calc(1000vw / 750);
   }

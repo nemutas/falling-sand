@@ -4,7 +4,6 @@ precision highp int;
 
 uniform vec2 resolution;
 uniform sampler2D positionMap;
-uniform int frame;
 uniform vec2 clickPos;
 uniform vec3 sandColor;
 
