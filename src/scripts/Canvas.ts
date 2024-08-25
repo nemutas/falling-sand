@@ -12,8 +12,8 @@ export class Canvas extends Three {
   private isClick = false
   private clickPos: [number, number] = [-1, -1]
 
-  private prevSandColor?: number
   private sandColors = [0xd9bd86, 0xd2b170, 0xcfa44e, 0xcbad72, 0xc7a257, 0xc59a44, 0xd5a33f]
+  private prevSandColor = this.sandColors[0]
 
   constructor(canvas: HTMLCanvasElement) {
     super(canvas)
@@ -209,10 +209,11 @@ export class Canvas extends Three {
 
   private get sandColor() {
     let col = this.sandColors[Math.trunc(Math.random() * this.sandColors.length)]
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
       if (col !== this.prevSandColor) break
       col = this.sandColors[Math.trunc(Math.random() * this.sandColors.length)]
     }
+    this.prevSandColor = col
     return col
   }
 }
